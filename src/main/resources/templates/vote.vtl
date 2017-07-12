@@ -2,12 +2,17 @@
 <h1>Make a vote</h1>
 
 <form action="/votes" method="post">
-
-Option 1: $option1.getName()<br>
-Option 2: $option2.getName()<br>
-
   <div class="form-group">
-    <label for="choice">What is your favorite?</label>
+
+  <input id="option1" name="option1" type="hidden" value="$option1.getId()">
+  <input id="option2" name="option2" type="hidden" value="$option2.getId()">
+
+    <label for="winner">What is your favorite?</label>
+    <select name="winner">
+      <option value="$option1.getId()">$option1.getName()</option>
+      <option value="$option2.getId()">$option2.getName()</option>
+    </select>
+
     <input id="choice" name="choice" type="text" class="form-control">
   </div>
 

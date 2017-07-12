@@ -1,8 +1,16 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.time.LocalDateTime;
 import java.sql.Timestamp;
 import java.util.List;
 import org.sql2o.*;
 import java.util.UUID;
+import static spark.Spark.*;
+import spark.ModelAndView;
+import spark.template.velocity.VelocityTemplateEngine;
+import java.util.Random;
+
+
 
 //generate random UUIDs
 // return UUID.randomUUID();
@@ -18,8 +26,7 @@ public class Vote {
   private Company option2;
 
   public Vote(int winner_id, int loser_id){
-    //this.user_id = user_id;
-    this.user_id = UUID.randomUUID();
+    this.user_id = App.siteCookie;
     this.winner_id = winner_id;
     this.loser_id = loser_id;
     this.date = LocalDateTime.now();
@@ -55,8 +62,8 @@ public class Vote {
   public void save() {
     Timestamp timestamp = Timestamp.valueOf(this.date); //need to convert LocalDateTime to Timestamp
 
-    //look for cookie logic here
-
+    // cookie logic here
+    //set a cookie
 
     try(Connection con = DB.sql2o.open()) {
       String sql = "INSERT INTO votes (user_id, winner_id, loser_id, date) VALUES (:user_id, :winner_id, :loser_id, :date);";
