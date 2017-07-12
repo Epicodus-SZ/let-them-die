@@ -1,0 +1,16 @@
+<!--vote.vtl-->
+<h1>Make a vote</h1>
+
+<form action="/votes" method="post">
+
+Option 1: $option1.getName()<br>
+Option 2: $option2.getName()<br>
+
+  <div class="form-group">
+    <label for="choice">What is your favorite?</label>
+    <input id="choice" name="choice" type="text" class="form-control">
+  </div>
+
+  <button type="submit" class="btn btn-success">Add Task</button>
+</form>
+<!--vote.vtl-->

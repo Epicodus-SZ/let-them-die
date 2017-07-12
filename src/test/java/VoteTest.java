@@ -26,6 +26,16 @@ public class VoteTest {
     assertEquals(testVote.getId(), dbVote.getId());
   }
 
+  @Test
+  public void Vote_Creates2AttachedCompanyObjects_true() {
+    Vote testVote = new Vote(1,2);
+    testVote.save();
+    Vote dbVote = Vote.all().get(0);
+    assertEquals(testVote.getId(), dbVote.getId());
+  }
+
+
+
   // @Test
   // public void save_InsertsUserIDIntoUserTable_true() {
   //   Vote testVote = new Vote(1,2);

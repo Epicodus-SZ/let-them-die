@@ -14,6 +14,8 @@ public class Vote {
   private int winner_id;
   private int loser_id;
   private LocalDateTime date;
+  private Company option1;
+  private Company option2;
 
   public Vote(int winner_id, int loser_id){
     //this.user_id = user_id;
@@ -21,6 +23,7 @@ public class Vote {
     this.winner_id = winner_id;
     this.loser_id = loser_id;
     this.date = LocalDateTime.now();
+
   }
 
   public int getId(){
@@ -51,6 +54,10 @@ public class Vote {
 
   public void save() {
     Timestamp timestamp = Timestamp.valueOf(this.date); //need to convert LocalDateTime to Timestamp
+
+    //look for cookie logic here
+
+
     try(Connection con = DB.sql2o.open()) {
       String sql = "INSERT INTO votes (user_id, winner_id, loser_id, date) VALUES (:user_id, :winner_id, :loser_id, :date);";
       this.id = (int) con.createQuery(sql, true)
