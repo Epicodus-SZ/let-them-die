@@ -55,15 +55,23 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    get("/charts", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      //Query the database and get saves List
+      //Create a list Object
+      // Put the database results in this Object
+      List<SaveList> dbSaveList = SaveList.getSavesList();
+      //put that object in the model
+      model.put("saveListList", dbSaveList);
+      model.put("template", "templates/charts.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
 
-    // // temp testing route
-    // get("/cookieTest", (request, response) -> {
-    //   Map<String, Object> model = new HashMap<String, Object>();
-    //   String test = request.cookie("foo");
-    //   model.put("cookie", test);
-    //   model.put("template", "templates/vote-success.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
+
+
+
+
+
 
 
     post("/votes", (request, response) -> {
