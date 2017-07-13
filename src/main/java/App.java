@@ -38,11 +38,12 @@ public class App {
       Random rand = new Random();
       List<Company> dbCompanies = Company.all();
       int companyCount = dbCompanies.size();
-      int randomNum = rand.nextInt((companyCount - 0) + 1);
+      int randomNum = rand.nextInt((companyCount - 0));
       Company option1 = dbCompanies.get(randomNum);
+      //Company option1 = dbCompanies.get(55);
       Company option2;
       do {
-        int randomNum2 = rand.nextInt((companyCount - 0) + 1);
+        int randomNum2 = rand.nextInt((companyCount - 0));
         option2 = dbCompanies.get(randomNum2);
       }
       while (option1.getName().equals(option2.getName()));
@@ -72,7 +73,15 @@ public class App {
       int winner = Integer.parseInt(request.queryParams("winner"));
       int loser;
 
-      voteUser.setId(UUID.fromString(request.cookie("user_id")));
+      //check for cookie and set user_id
+      if (request.cookie("user_id") != null) {
+        //a cookie exists retrieve it
+        voteUser.setId(UUID.fromString(request.cookie("user_id"))) ;
+      } else {
+        //no cookie, make one
+        response.cookie("user_id", voteUser.getId().toString(), 3600);
+      }
+
       UUID voter_id = voteUser.getId();
       int option1 = Integer.parseInt(request.queryParams("option1"));
       int option2 = Integer.parseInt(request.queryParams("option2"));
