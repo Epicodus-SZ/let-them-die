@@ -73,13 +73,6 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-
-
-
-
-
-
-
     post("/", (request, response) -> {
       //get post information
       User voteUser = new User();
