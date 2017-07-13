@@ -15,13 +15,7 @@ public class App {
     staticFileLocation("/public");
     String layout = "templates/layout.vtl";
 
-    //test route for testing only, can be deleted
-    get("/hello", (request, response) -> {
-      return "Hello Friend!";
-    });
-
-
-    get("/votes", (request, response) -> {
+    get("/", (request, response) -> {
       //make a new user
       User voteUser = new User();
       // Determine if this is a new user
@@ -50,20 +44,32 @@ public class App {
       model.put("cookie", voteUser.getId().toString());
       model.put("option1", option1);
       model.put("option2", option2);
-      model.put("template", "templates/vote.vtl");
+      model.put("template", "templates/index.vtl");
 
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    get("/charts", (request, response) -> {
+    get("/saved", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
       //Query the database and get saves List
       //Create a list Object
       // Put the database results in this Object
-      List<SaveList> dbSaveList = SaveList.getSavesList();
+      List<LTDList> dbSaveList = LTDList.getSavesList();
       //put that object in the model
       model.put("saveListList", dbSaveList);
-      model.put("template", "templates/charts.vtl");
+      model.put("template", "templates/saved.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/died", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      //Query the database and get saves List
+      //Create a list Object
+      // Put the database results in this Object
+      List<LTDList> dbDieList = LTDList.getDiedList();
+      //put that object in the model
+      model.put("diedList", dbDieList);
+      model.put("template", "templates/died.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
@@ -74,7 +80,7 @@ public class App {
 
 
 
-    post("/votes", (request, response) -> {
+    post("/", (request, response) -> {
       //get post information
       User voteUser = new User();
 
@@ -102,7 +108,7 @@ public class App {
 
       newVote.save();
       voteUser.save();
-      response.redirect("/votes");
+      response.redirect("/");
 
       Map<String, Object> model = new HashMap<String, Object>();
       return new ModelAndView(model, layout);

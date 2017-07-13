@@ -1,0 +1,15 @@
+    <div class="container">
+
+    <table>
+      <tr>
+        <th>Count</th>
+        <th>Company</th>
+      </tr>
+      #foreach ($SaveList in $diedList)
+      <tr>
+        <td>$SaveList.getName()</td>
+        <td>$SaveList.getDeaths()</td>
+      </tr>
+      #end
+    </table>
+    </div>
