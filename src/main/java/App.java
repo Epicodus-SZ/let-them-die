@@ -10,7 +10,7 @@ import java.util.UUID;
 
 
 public class App {
-  public static UUID siteCookie;
+  // public static UUID cookieUUID;
 
   public static void dummyData(){
     Company testCompany = new Company("Comcast");
@@ -28,43 +28,41 @@ public class App {
     //add some data to Company table
     dummyData();
 
-    get("/hello", (request, response) -> "Hello Friend!");
+    //test route for testing only, can be deleted
+    get("/hello", (request, response) -> {
+      return "Hello Friend!";
+    });
 
 
     get("/votes", (request, response) -> {
-
+      //make a new user
+      User voteUser = new User();
+      // Determine if this is a new user
       if (request.cookie("user_id") != null) {
-        siteCookie = UUID.fromString(request.cookie("user_id"));
+        //a cookie exists retrieve it
+        voteUser.setId(UUID.fromString(request.cookie("user_id"))) ;
       } else {
-        response.cookie("user_id", UUID.randomUUID().toString(), 3600);
+        //no cookie, make one
+        response.cookie("user_id", voteUser.getId().toString(), 3600);
       }
-
-
-
-
       Map<String, Object> model = new HashMap<String, Object>();
-
-      //make a list of 2 companies
-      //random logic here
+      
+      //Randomly select 2 different companies
       Random rand = new Random();
-
       List<Company> dbCompanies = Company.all();
       int companyCount = dbCompanies.size();
       int randomNum = rand.nextInt((companyCount - 0) + 1);
       Company option1 = dbCompanies.get(randomNum);
       Company option2;
-
       do {
         int randomNum2 = rand.nextInt((companyCount - 0) + 1);
         option2 = dbCompanies.get(randomNum2);
       }
       while (option1.getName().equals(option2.getName()));
-
+      model.put("cookie", voteUser.getId().toString());
       model.put("option1", option1);
       model.put("option2", option2);
       model.put("template", "templates/vote.vtl");
-
-
 
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
@@ -81,11 +79,14 @@ public class App {
 
 
     post("/votes", (request, response) -> {
-      Map<String, Object> model = new HashMap<String, Object>();
+      //get post information
+      User voteUser = new User();
 
       int winner = Integer.parseInt(request.queryParams("winner"));
       int loser;
-
+      
+      voteUser.setId(UUID.fromString(request.cookie("user_id")));
+      UUID voter_id = voteUser.getId();
       int option1 = Integer.parseInt(request.queryParams("option1"));
       int option2 = Integer.parseInt(request.queryParams("option2"));
       if (winner==option1){
@@ -93,12 +94,13 @@ public class App {
       } else {
         loser = option1;
       }
+      Vote newVote = new Vote(voter_id,winner,loser);
 
-      Vote newVote = new Vote(winner,loser);
       newVote.save();
-      model.put("template", "templates/vote-success.vtl");
+      voteUser.save();
+      response.redirect("/votes");
 
-
+      Map<String, Object> model = new HashMap<String, Object>();
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 

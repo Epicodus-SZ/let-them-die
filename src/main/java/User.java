@@ -2,16 +2,22 @@ import java.time.LocalDateTime;
 import java.sql.Timestamp;
 import java.util.List;
 import org.sql2o.*;
+import java.util.UUID;
+
 
 public class User {
-  private int id;
+  private UUID id;
 
   public User(){
-    //nothing here yet
+    id = UUID.randomUUID();
   }
 
-  public int getId(){
+  public UUID getId(){
     return id;
+  }
+
+  public void setId(UUID id){
+    this.id = id;
   }
 
   @Override
@@ -31,15 +37,23 @@ public class User {
      }
    }
 
-  // public void save() {
-  //   try(Connection con = DB.sql2o.open()) {
-  //     // will change in the future
-  //     String sql = "INSERT INTO users (name) VALUES (:name);";
-  //     this.id = (int) con.createQuery(sql, true)
-  //       .addParameter("name", this.name)
-  //       .executeUpdate()
-  //       .getKey();
-  //   }
-  // }
+  //  public static boolean exists(UUID id) {
+  //    String sql = "SELECT case when exists (SELECT true from votes where id=:id) then 'true' else 'false' end";
+  //    try(Connection con = DB.sql2o.open()) {
+  //      return con.createQuery(sql)
+  //       .addParameter("id", XXXXXXX.toString())
+  //       .executeScalar(Boolean.class);
+  //    }
+
+  public void save() {
+    try(Connection con = DB.sql2o.open()) {
+      // will change in the future
+      String sql = "INSERT INTO users (id) VALUES (:id) ON CONFLICT DO NOTHING";
+      //String sql = "INSERT INTO users (id) VALUES (:id)";
+      con.createQuery(sql, true)
+        .addParameter("id", this.id)
+        .executeUpdate();
+    }
+  }
 
 } // end of User class

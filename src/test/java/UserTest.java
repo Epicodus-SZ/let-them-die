@@ -13,6 +13,13 @@ public class UserTest {
     assertEquals(true, testUser instanceof User);
   }
 
+  @Test
+  public void Save_AddsUserToUserTable_true() {
+    User testUser = new User();
+    testUser.save();
+    assertEquals(User.all().get(0).getId(), testUser.getId());
+  }
+
   // @Test
   // public void all_returnsAllInstancesOfUser_true() {
   //   User testUser = new User("Comcast");

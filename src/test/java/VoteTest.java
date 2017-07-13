@@ -14,27 +14,19 @@ public class VoteTest {
 
   @Test
   public void Vote_instantiatesCorrectly_true() {
-    Vote testVote = new Vote(1,2);
+    UUID testId = UUID.randomUUID();
+    Vote testVote = new Vote(testId,1,2);
     assertEquals(true, testVote instanceof Vote);
   }
 
   @Test
   public void save_InsertsVoteIntoVoteTable_true() {
-    Vote testVote = new Vote(1,2);
+    UUID testId = UUID.randomUUID();
+    Vote testVote = new Vote(testId,1,2);
     testVote.save();
     Vote dbVote = Vote.all().get(0);
     assertEquals(testVote.getId(), dbVote.getId());
   }
-
-  @Test
-  public void Vote_Creates2AttachedCompanyObjects_true() {
-    Vote testVote = new Vote(1,2);
-    testVote.save();
-    Vote dbVote = Vote.all().get(0);
-    assertEquals(testVote.getId(), dbVote.getId());
-  }
-
-
 
   // @Test
   // public void save_InsertsUserIDIntoUserTable_true() {

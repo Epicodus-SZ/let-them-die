@@ -11,11 +11,6 @@ import spark.template.velocity.VelocityTemplateEngine;
 import java.util.Random;
 
 
-
-//generate random UUIDs
-// return UUID.randomUUID();
-
-
 public class Vote {
   private int id;
   private UUID user_id;
@@ -25,8 +20,8 @@ public class Vote {
   private Company option1;
   private Company option2;
 
-  public Vote(int winner_id, int loser_id){
-    this.user_id = App.siteCookie;
+  public Vote(UUID id, int winner_id, int loser_id){
+    this.user_id = id;
     this.winner_id = winner_id;
     this.loser_id = loser_id;
     this.date = LocalDateTime.now();
@@ -74,11 +69,6 @@ public class Vote {
         .addParameter("date", timestamp)
         .executeUpdate()
         .getKey();
-
-      String sql2 = "INSERT INTO users (id) VALUES (:user_id);";
-      con.createQuery(sql2, true)
-        .addParameter("user_id", this.user_id)
-        .executeUpdate();
     }
   }
 
