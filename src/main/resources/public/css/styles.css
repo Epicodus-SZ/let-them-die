@@ -1,0 +1,43 @@
+#wrapper {
+  width: 700px;
+  margin: 30px auto;
+  position:relative;
+}
+
+img {
+  width:40px;
+}
+
+input[type=radio] {
+  display: none;
+}
+
+.option {
+  display:inline-block;
+}
+
+.option label {
+  background: #eee;
+  padding: 10px 10px 9px 10px;
+  border: 1px solid #ccc;
+  margin-left: -1px;
+  position: relative;
+  left: 1px;
+  min-width: 160px;
+  cursor:pointer;
+}
+
+.option [type=radio] {
+  display: none;
+}
+
+[type=radio]:checked ~ label {
+  background-color: white;
+  z-index: 20;
+}
+
+[type=radio]:checked ~ .content {
+  z-index: 12;
+  opacity: 1.0;
+  transition: opacity 1s;
+}

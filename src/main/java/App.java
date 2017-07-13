@@ -10,23 +10,10 @@ import java.util.UUID;
 
 
 public class App {
-  // public static UUID cookieUUID;
-
-  public static void dummyData(){
-    Company testCompany = new Company("Comcast");
-    testCompany.save();
-    Company testCompany2 = new Company("Microsoft");
-    testCompany2.save();
-    Company testCompany3 = new Company("Amazon");
-    testCompany3.save();
-  }
 
   public static void main(String[] args) {
     staticFileLocation("/public");
     String layout = "templates/layout.vtl";
-
-    //add some data to Company table
-    dummyData();
 
     //test route for testing only, can be deleted
     get("/hello", (request, response) -> {
@@ -46,7 +33,7 @@ public class App {
         response.cookie("user_id", voteUser.getId().toString(), 3600);
       }
       Map<String, Object> model = new HashMap<String, Object>();
-      
+
       //Randomly select 2 different companies
       Random rand = new Random();
       List<Company> dbCompanies = Company.all();
@@ -84,7 +71,7 @@ public class App {
 
       int winner = Integer.parseInt(request.queryParams("winner"));
       int loser;
-      
+
       voteUser.setId(UUID.fromString(request.cookie("user_id")));
       UUID voter_id = voteUser.getId();
       int option1 = Integer.parseInt(request.queryParams("option1"));
